@@ -38,18 +38,19 @@ function totalSum()
 {
     surf_area = 0;
     circuit_len = 0;
+    sum_total = [surf_area, circuit_len];
 
     for (var i = 0; i < arguments.length; i++)
     {
         for(const num_arg of arguments[i])
         {
-            surf_area += num_arg.pole;
-            circuit_len += num_arg.obwod;
+            sum_total[0] += num_arg.pole;
+            sum_total[1] += num_arg.obwod;
         }
     }
-    console.log(`Pole całkowite : ${surf_area}, Obwód całkowity: ${circuit_len}`);
+    return sum_total;
 }
 
 fig_array = [new Kolo(1), new Kolo(2), new Kwadrat(3)]
-totalSum(fig_array)
+console.log(`Pole całkowite : ${totalSum(fig_array)[0]}, Obwód całkowity: ${totalSum(fig_array)[1]}`);
 
