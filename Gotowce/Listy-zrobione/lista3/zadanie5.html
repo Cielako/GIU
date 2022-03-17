@@ -1,0 +1,266 @@
+<html>
+
+<body>
+
+    <head>
+        <style>
+            td {
+                height: 55px;
+                width: 55px;
+                border: 1px solid grey;
+                text-align: center;
+                font-size: 1.5em;
+            }
+            select {/*width: 55px; height: 55px;*/border: 0px solid white}
+        </style>
+    </head>
+    <div id="komunikat" style="font-size: 2em;"></div>
+    <table>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    <button onclick="losuj(30)">Losuj</button>
+    <button onclick="sprawdz()">Sprawdź</button>
+    <button onclick="losujzesprawdzeniem(30)">LosujZeSprawdzeniem</button>
+    <button onclick="helper()">Helper</button>
+    <script>
+        let komórka = document.querySelectorAll("td");
+        let but = document.querySelectorAll("button");
+        let niePuste = [];
+
+        function losuj(n) {
+            for (let i = 0; i < 81; i++) {   //czyszczenie
+                komórka[i].innerHTML = "";
+                document.getElementById("komunikat").innerHTML = "";
+            }
+            for (let i = 0; i < n; i++) {
+                let tak = true;
+                while (tak) {
+                    niePuste[i] = Math.floor(Math.random() * 81);
+                    if (komórka[niePuste[i]].innerHTML == "") tak = false;
+                }
+                komórka[niePuste[i]].innerHTML = Math.floor(Math.random() * 9 + 1);
+            }
+        }
+
+        function sprawdz() {
+            let kolumny = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            let wiersze = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            //KOLUMNY
+            for (let i = 0; i < 9; i++) {                   
+                kolumny = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                for (let j = 0; j < 81; j += 9) {
+                    if (komórka[i + j].innerHTML != ""){
+                        kolumny[komórka[i + j].innerHTML]++;
+                        //for (let k = 1; k <= 9; k++) {
+                        if (kolumny[komórka[i + j].innerHTML] >= 2) {
+                            document.getElementById("komunikat").innerHTML = "Złe ułożenie liczb! Losuj jeszcze raz";
+                            return 0;
+                        }
+                        //}
+                    }
+                }
+                
+            }
+            //WIERSZE
+            for (let j = 0; j < 81; j += 9) {               
+                wiersze = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                for (let i = 0; i < 9; i++) {
+                    if (komórka[i + j].innerHTML != ""){
+                        wiersze[komórka[i + j].innerHTML]++;
+                        //for (let k = 1; k <= 9; k++) {
+                        if (wiersze[komórka[i + j].innerHTML] >= 2) {
+                            document.getElementById("komunikat").innerHTML = "Złe ułożenie liczb! Losuj jeszcze raz";
+                            return 0;
+                        }
+                        //}
+                    }
+                }
+            }
+            //POLA 3x3
+            let pole = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
+            for (let k = 0; k <= 54; k += 27) {         // pion co 3  
+                for (let p = 0; p < 3; p += 1) {        // poziom co 3
+                    pole = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    for (let i = p * 3; i < (p * 3 + 3); i++) {
+                        for (let j = k; j <= (k + 18); j += 9) {
+                            if (komórka[i + j].innerHTML != "") {
+                                pole[komórka[i + j].innerHTML]++;
+                                //console.log(i+j, komórka[ i+j ].innerHTML, pole[ komórka[ j+k ].innerHTML ]);
+                                if (pole[komórka[i + j].innerHTML] >= 2) {
+                                    document.getElementById("komunikat").innerHTML = "Złe ułożenie liczb! Losuj jeszcze raz";
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function losujzesprawdzeniem(n) {
+            for (let i = 0; i < 81; i++) {   //czyszczenie
+                komórka[i].innerHTML = "";
+                document.getElementById("komunikat").innerHTML = "";
+                
+                // komórka[i].onclick=()=>{
+                //     komórka[i].innerHTML="";
+                //     helper();
+                // }
+
+            }
+            
+            let tak = true;     //do while'a sprawdzajacego
+            let tak2 = true;    //do while'a losujacego komorke
+            let odlegloscPoziom;
+            let odlegloscPion;
+
+            for (let i = 0; i < n; i++) {
+                tak = true;
+                tak2 = true;
+                while (tak2) {   // losuje miejsce w ktorym nie ma liczby zadnej
+                    niePuste[i] = Math.floor(Math.random() * 81);
+                    if (komórka[niePuste[i]].innerHTML == "") tak2 = false;
+                }
+                while(tak){
+                    komórka[niePuste[i]].innerHTML = Math.floor(Math.random() * 9 + 1);
+                    
+                    let kolumna = false; 
+                    let wiersz = false;
+                    let pole = false;
+
+                    odlegloscPoziom = niePuste[i]%9;              //odleglosc komórki od lewej sciany
+                    odlegloscPion = Math.floor(niePuste[i]/9);    //odleglosc komórki od gornej sciany
+
+                    for(let j=odlegloscPoziom;j<81;j+=9){  //kolumny
+                        if(j != niePuste[i]){
+                            if(komórka[j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                kolumna = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(kolumna == false){
+                        for(let j=odlegloscPion*9; j<(odlegloscPion*9+9); j++){  //wiersze
+                            if(j != niePuste[i]){
+                                if(komórka[j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                    wiersz = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    let w = 0;
+                    let k = 0;
+                    if(niePuste[i]>=0 && niePuste[i]<=2 || niePuste[i]>=9 && niePuste[i]<=11 || niePuste[i]>=18 && niePuste[i]<=20) {w=0; k=0;}
+                    else if(niePuste[i]>=3 && niePuste[i]<=5 || niePuste[i]>=12 && niePuste[i]<=14 || niePuste[i]>=21 && niePuste[i]<=23) {w=0; k=1;}
+                    else if(niePuste[i]>=6 && niePuste[i]<=8 || niePuste[i]>=15 && niePuste[i]<=17 || niePuste[i]>=24 && niePuste[i]<=26) {w=0; k=2;}
+
+                    else if(niePuste[i]>=27 && niePuste[i]<=29 || niePuste[i]>=36 && niePuste[i]<=38 || niePuste[i]>=45 && niePuste[i]<=47) {w=27; k=0;}
+                    else if(niePuste[i]>=30 && niePuste[i]<=32 || niePuste[i]>=39 && niePuste[i]<=41 || niePuste[i]>=48 && niePuste[i]<=50) {w=27; k=1;}
+                    else if(niePuste[i]>=33 && niePuste[i]<=35 || niePuste[i]>=42 && niePuste[i]<=44 || niePuste[i]>=51 && niePuste[i]<=53) {w=27; k=2;}
+                    
+                    else if(niePuste[i]>=54 && niePuste[i]<=56 || niePuste[i]>=63 && niePuste[i]<=65 || niePuste[i]>=72 && niePuste[i]<=74) {w=54; k=0;}
+                    else if(niePuste[i]>=57 && niePuste[i]<=59 || niePuste[i]>=66 && niePuste[i]<=68 || niePuste[i]>=75 && niePuste[i]<=77) {w=54; k=1;}
+                    else if(niePuste[i]>=60 && niePuste[i]<=62 || niePuste[i]>=69 && niePuste[i]<=71 || niePuste[i]>=78 && niePuste[i]<=80) {w=54; k=2;}
+                    
+                    for(let z = w; z<w+27; z+=9){                
+                        for(let j = k*3; j<((k*3)+3); j++){
+                            if( z+j != niePuste[i] ){
+                                if(komórka[z+j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                    pole = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(pole == true) break;
+                    }
+                    if(kolumna == false && wiersz == false && pole == false) tak = false;
+                }
+            }
+            helper();
+        }
+
+        function helper(){
+            for(let i = 0 ; i < 81 ; i++){
+
+                let liczby = [0,0,0,0,0,0,0,0,0,0];
+                let odlegloscPoziom = i%9;
+                let odlegloscPion = Math.floor(i/9);
+                //console.log(parseInt(komórka[i].innerHTML));
+                if(komórka[i].innerHTML == "" || typeof Number(+(komórka[i].innerHTML)) != "number"){
+                    for(let j = (odlegloscPion*9); j < (odlegloscPion*9) + 9 ; j++){
+                        if( j != i ){
+                            if(komórka[j].innerHTML != ""){
+                                liczby[komórka[j].innerHTML] = 1;
+                            }
+                        }
+                    }
+                    for(let j = odlegloscPoziom ; j < 81 ; j+=9){
+                        if( j != i ){
+                            if(komórka[j].innerHTML != ""){
+                                liczby[komórka[j].innerHTML] = 1;
+                            }
+                        }
+                    }
+                    let w = 0;
+                    let k = 0;
+                    if(i>=0 && i<=2 || i>=9 && i<=11 || i>=18 && i<=20) {w=0; k=0;}
+                    if(i>=3 && i<=5 || i>=12 && i<=14 || i>=21 && i<=23) {w=0; k=1;}
+                    if(i>=6 && i<=8 || i>=15 && i<=17 || i>=24 && i<=26) {w=0; k=2;}
+
+                    if(i>=27 && i<=29 || i>=36 && i<=38 || i>=45 && i<=47) {w=27; k=0;}
+                    if(i>=30 && i<=32 || i>=39 && i<=41 || i>=48 && i<=50) {w=27; k=1;}
+                    if(i>=33 && i<=35 || i>=42 && i<=44 || i>=51 && i<=53) {w=27; k=2;}
+                    
+                    if(i>=54 && i<=56 || i>=63 && i<=65 || i>=72 && i<=74) {w=54; k=0;}
+                    if(i>=57 && i<=59 || i>=66 && i<=68 || i>=75 && i<=77) {w=54; k=1;}
+                    if(i>=60 && i<=62 || i>=69 && i<=71 || i>=78 && i<=80) {w=54; k=2;}
+                    
+                    for(let z = w; z<w+27; z+=9){                
+                        for(let j = k*3; j<((k*3)+3); j++){
+                            if( z+j != i ){
+                                if(liczby[komórka[z+j].innerHTML] = 1){
+                                }
+                            }
+                        }
+                    }
+
+                    //nadawnie selectow
+                    let s = "";
+                    s+="<select onchange=graj(value,"+i+") id="+i+"><option> </option>"; 
+                    for(let j=1; j<=9; j++){
+                        if(liczby[j]==0){
+                            s+="<option>"+j+"</option>";
+                        }
+                    }
+                    s+="</select>";
+                    komórka[i].innerHTML = s;   
+                }
+                else if(typeof parseInt(komórka[i].innerHTML) == "number"){
+                    komórka[i].onclick=()=>{
+                        komórka[i].innerHTML="";
+                        helper();
+                        komórka[i].onclick="";
+                    }
+                }
+            }
+        }
+        function graj(value, i){   //przypisuje wartosc komorce odpowiadajaca wybranej opcji z selecta
+            komórka[i].innerHTML = value;
+            //console.log(value);
+            helper();
+        }
+
+    </script>
+</body>
+</html>

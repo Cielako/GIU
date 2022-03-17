@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        h1{text-align:center}
+        nav{width:auto;margin:auto}
+        #hanoi {
+            height:500px;
+            width:800px;
+            margin:20px auto;
+            border: 1px solid grey;
+            } 
+        #hanoi > div {
+                height:500px;
+                width:330px;
+                border:1px solid green;
+                vertical-align:bottom;
+                display:table-cell
+            }
+        .k {background:yellow;border:1px solid grey;height:10%;margin:auto;border-radius:25px}
+        .k.cur {background:green}
+        * {font-family:Sans;}
+    </style>
+</head>
+<body>
+
+<center>    
+<h1>Hanoi</h1>
+
+Przenieś wieżę do prawej klatki
+
+<div id='hanoi'>
+    <div id='a'></div>
+    <div id='b'></div>
+    <div id='c'></div>
+</div>
+
+<button>Demo</button>
+</center>
+
+<script>
+var cur;
+var i;
+
+for(i=2;i<10;i++)
+    $("#a").append("<div id='" + i + "' class='k' style='width:" + i + "0%'></div>");
+
+
+$('.k').click(
+    function()
+    {
+        $(".cur").removeClass('cur');
+        cur=this;
+        $(this).addClass('cur');
+        return false;
+        
+    }
+);
+
+
+$("#hanoi >div").click(
+    
+    function()
+    {   
+        var to=$(this).children(":first").attr("id");        
+        var from=$(cur).attr("id")
+        
+        if($(cur).is(":first-child"))
+            if(to==undefined || to>from)
+                $(this).prepend(cur);
+    }    
+);
+
+function* hanoi(n,a,b,c)
+{
+    if(n==1)
+    {
+        yield $(c).prepend($(a).children(":first"));
+    }
+    else
+    {
+        yield* hanoi(n-1,a,c,b); 
+        yield* hanoi(1,a,b,c);
+        yield* hanoi(n-1,b,a,c);
+    }
+        
+}
+let h = hanoi(8,"#a","#b","#c");
+$("button").click(
+    function()
+    {
+        //hanoi($('#a').children().size(),"#a","#b","#c");
+        setInterval(() => h.next().done, 1000);
+    }
+);
+</script>
+
+</body>
+</html>

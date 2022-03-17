@@ -1,0 +1,46 @@
+<html>
+    <body>
+        Jurek
+        <h1> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</h1>
+        <h1> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</h1>
+        <h1> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</h1>
+        <div> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</div>
+        <h2> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</h2>
+        <h2> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</h2>
+        <h2>dsdxvcvcbvcbsffffff
+            <h3>
+                <div>jedno w drugim i też działa, ale fajnie</div>
+            </h3>
+        </h2>
+        <p> Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</p>
+        <div>ttralallala</div>
+        <p>dsfsssssss</p>
+        <span>Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter</span>
+        <br><span>ghrtzhrtfaaaaaaaaaaf</span>
+        <div>niby tekst a jednak nieczytelny</div>
+        <span>siała baba mak nie wiedziała jak</span>
+    </body>
+        <script>
+            var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+            //console.log(document.body.childNodes);
+            for(let x of document.body.childNodes){
+                if(String(x) != '[object HTMLScriptElement]'){ 
+                // x.textContent = x.textContent.split("").reverse().join("");   //to odwraca cały tekst w znaczniku
+                var tablica = x.textContent.split(" ");//.join("");
+                for(let y in tablica){
+                    tablica[y] = tablica[y].split("").reverse().join("");
+                    if(format.test(tablica[y])){ //wyszukuje znaków z formatu w tablicy[y]
+                        
+                        var tab = tablica[y].split("");
+                        tab[tab.length] = tab[0];
+                        tab[0] = "";
+                        tab = tab.join("")
+                        tablica[y] = String(tab);
+                    }
+                }
+                tablica = tablica.join(" ");
+                x.textContent = tablica;
+                }
+            }
+        </script>
+</html>

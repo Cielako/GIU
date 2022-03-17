@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div id="org">
+        <h1>Tytuł dla testu</h1>
+        <h2>Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter.</h2>
+        <h3>Przykłądowe słowa, by móc zobaczyć, jak działa kod.</h3>
+        <p>Siała baba mak, nie wiedziała jak.</p>
+        <h3>Analogicznie, jak wyżej</h3>
+        <h1>Dziękuję za uwagę.</h1>
+    </div>
+    <div id="odw">
+        <h1>Tytuł dla testu</h1>
+        <h2>Napisz skrypt, który w każdym słowie treści dokumentu odwróci kolejność liter.</h2>
+        <h3>Przykłądowe słowa, by móc zobaczyć, jak działa kod.</h3>
+        <p>Siała baba mak, nie wiedziała jak.</p>
+        <h3>Analogicznie, jak wyżej</h3>
+        <h1>Dziękuję za uwagę.</h1>
+    </div>
+
+    <script>
+        let div = document.querySelectorAll("div");
+        let rev = div[1].childNodes;
+        for (let x of rev){
+            let slowa = x.textContent.split(/[ ]/);
+
+            for(let i = 0; i < slowa.length; i++){
+                if(slowa[i].endsWith(".")){
+                    slowa[i] = slowa[i].split('.')[0].split('').reverse().join('');
+                    slowa[i] += ".";
+                }
+                else if(slowa[i].endsWith(",")){
+                    slowa[i] = slowa[i].split(',')[0].split('').reverse().join('');
+                    slowa[i] += ",";
+                }
+                else {
+                    slowa[i] = slowa[i].split('').reverse().join('');
+                }
+            }
+            x.textContent = slowa.join(" ");
+        }
+    </script>
+</body>
+</html>

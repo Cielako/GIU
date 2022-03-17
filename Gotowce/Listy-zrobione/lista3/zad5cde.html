@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zad 5 - SUDOKU</title>
+    <style>
+        td {
+            height: 50px;
+            width: 50px;
+            border: solid grey 1px;
+            text-align: center;
+        }
+
+        select {
+            height: 48px;
+            width: 48px;
+            border: none;
+            background-color: khaki;
+            text-align: center;
+            user-select: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <button onclick="letsPlay(30);">Nowa gra</button>
+    <button onclick="losujZeSprawdzeniem(30);">Losuj</button>
+    <table></table>
+    <script>
+        let cells = [];      // plansza
+
+        // generowanie wierszy i kolumn, przypisanie ich do cells
+        function fields() {
+            document.querySelector("table").innerHTML = "";
+            let tbody = "";
+            for (let i = 0; i < 9; i++) {
+                tbody += "<tr>";
+                for (let j = 0; j < 9; j++) {
+                    tbody += "<td></td>";
+                }
+                tbody += "</tr>";
+            }
+            document.querySelector("table").innerHTML = tbody;
+            cells = [];
+            cells = document.querySelectorAll("td");
+        }
+
+        // podpunkt c // losowanie wartosci 1-9 w n komorkach i sprawdzanie po kolei // wywoluje fields
+        function losujZeSprawdzeniem(n) {
+            fields();
+            for (let i = 0; i < n; ++i) {
+                let id = 0, losuj = true;
+                while (losuj) {                                 // by sie nie powtarzaly id
+                    id = Math.floor(Math.random() * cells.length);
+                    if (cells[id].innerHTML == "") losuj = false;
+                }
+
+                let nr = 0;
+                losuj = true;
+                while (losuj) {                                 // cyfry w k w i s
+                    nr = Math.floor(Math.random() * 9 + 1);
+
+                    // jaka kolumna [0-8] i wiersz [0-8]
+                    let c = id % 9, w = Math.floor(id / 9);
+
+                    let repeat = false;
+
+                    // wiersz
+                    for (let i = w * 9; i < 9 * w + 9; ++i) {
+                        if (cells[i].innerHTML == nr && id != i) {
+                            repeat = true;
+                            break;
+                        }
+                    }
+
+                    // kolumna
+                    if (repeat != true) {
+                        for (let i = c; i < 81; i += 9) {
+                            if (cells[i].innerHTML == nr && id != i) {
+                                repeat = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // sektor 
+                    if (repeat != true) {
+                        let s = 0;
+                        if (c >= 0 && c < 3 && w * 9 >= 0 && w * 9 < 19) s = 0;         // sektor 0
+                        else if (c >= 3 && c < 6 && w * 9 >= 0 && w * 9 < 19) s = 3;    // sektor 1
+                        else if (c >= 6 && c < 9 && w * 9 >= 0 && w * 9 < 19) s = 6;    // sektor 2
+                        else if (c >= 0 && c < 3 && w * 9 >= 27 && w * 9 < 48) s = 27;   // sektor 3
+                        else if (c >= 3 && c < 6 && w * 9 >= 27 && w * 9 < 48) s = 30;   // sektor 4
+                        else if (c >= 6 && c < 9 && w * 9 >= 27 && w * 9 < 48) s = 33;   // sektor 5
+                        else if (c >= 0 && c < 3 && w * 9 >= 54 && w * 9 < 73) s = 54;   // sektor 6
+                        else if (c >= 3 && c < 6 && w * 9 >= 54 && w * 9 < 73) s = 57;   // sektor 7
+                        else if (c >= 6 && c < 9 && w * 9 >= 54 && w * 9 < 73) s = 60;   // sektor 8
+
+                        for (let i = s; i < s + 19; i += 9) {
+                            for (let j = i; j < i + 3; ++j) {
+                                if (cells[j].innerHTML == nr && j != id) {
+                                    repeat = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (repeat == false) losuj = false;
+                }
+                cells[id].innerHTML = nr;
+            }
+            helper();
+        }
+
+        function helper() {
+            for (let e = 0; e < cells.length; e++) {
+                if (isNaN(+(cells[e].innerHTML)) || cells[e].innerHTML == "") {
+                    let bselect = "<select><option>.</option>";
+
+                    let idThis = e;
+                    let c = idThis % 9, w = Math.floor(idThis / 9);
+                    let val = [1, 2, 3, 4, 5, 6, 7, 8, 9];      // mozliwe wartosci na start
+
+                    // wiersz
+                    for (let i = w * 9; i < 9 * w + 9; ++i) {
+                        if (cells[i].innerHTML != "" && idThis != i) {
+                            val[val.findIndex(element => element == cells[i].innerHTML)] = "";
+                        }
+                    }
+
+                    // kolumna
+                    for (let i = c; i < 81; i += 9) {
+                        if (cells[i].innerHTML != "" && idThis != i) {
+                            val[val.findIndex(element => element == cells[i].innerHTML)] = "";
+                        }
+                    }
+
+                    // sektor
+                    let s = 0;
+                    if (c >= 0 && c < 3 && w * 9 >= 0 && w * 9 < 19) s = 0;         // sektor 0
+                    else if (c >= 3 && c < 6 && w * 9 >= 0 && w * 9 < 19) s = 3;    // sektor 1
+                    else if (c >= 6 && c < 9 && w * 9 >= 0 && w * 9 < 19) s = 6;    // sektor 2
+                    else if (c >= 0 && c < 3 && w * 9 >= 27 && w * 9 < 48) s = 27;   // sektor 3
+                    else if (c >= 3 && c < 6 && w * 9 >= 27 && w * 9 < 48) s = 30;   // sektor 4
+                    else if (c >= 6 && c < 9 && w * 9 >= 27 && w * 9 < 48) s = 33;   // sektor 5
+                    else if (c >= 0 && c < 3 && w * 9 >= 54 && w * 9 < 73) s = 54;   // sektor 6
+                    else if (c >= 3 && c < 6 && w * 9 >= 54 && w * 9 < 73) s = 57;   // sektor 7
+                    else if (c >= 6 && c < 9 && w * 9 >= 54 && w * 9 < 73) s = 60;   // sektor 8
+
+                    for (let i = s; i < s + 19; i += 9) {
+                        for (let j = i; j < i + 3; ++j) {
+                            if (cells[j].innerHTML != "" && j != idThis) {
+                                val[val.findIndex(element => element == cells[j].innerHTML)] = "";
+                            }
+                        }
+                    }
+
+                    for (let l of val) {
+                        if (l != "") {
+                            bselect += "<option>" + l + "</option>";
+                        }
+                    }
+                    bselect += "</select>";
+                    cells[e].innerHTML = bselect;
+                }
+            }
+            graj();
+        }
+
+        function graj() {
+            let selects = document.querySelectorAll("select");
+            let cellsSelects = [];
+            for (let x = 0; x < selects.length; ++x) {
+                cellsSelects[x] = selects[x].offsetParent;
+            }
+
+            for (let i = 0; i < selects.length; ++i) {
+                selects[i].onchange = () => {
+                    selects[i].parentElement.innerText = selects[i].value;
+                    helper();
+                    cellsSelects[i].onclick = () => {
+                        cellsSelects[i].innerHTML = "";
+                        helper();
+                        cellsSelects[i].onclick = "";
+                    }
+                }
+            }
+        }
+        // start
+        function letsPlay(n) {
+            losujZeSprawdzeniem(n);
+        }
+
+    </script>
+</body>
+
+</html>

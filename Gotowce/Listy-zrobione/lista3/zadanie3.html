@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <style>
+            button {width:24%;height: 100px;font-size: 3em;}
+            input {width:450px;height: 50px;}
+        </style>
+    </head>
+    <body>
+        <input>
+        <div style="width: 450px; height: 450px;">
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>+</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>*</button>
+        <button>.</button>
+        <button>0</button>
+        <button>C</button>
+        <button>/</button>
+        <button style="background-color: aqua; width: 100%;">=</button>
+        </div>
+        <script>
+            let input = document.querySelector("input");
+            let buttons = document.querySelectorAll("button");
+            for(let button of buttons){
+                if(button.innerHTML=='=')
+                    button.onclick=()=>{input.value=eval(input.value)};
+                else if(button.innerHTML!='C')
+                    button.onclick=()=>{input.value+=button.innerHTML};
+                else if(button.innerHTML=='C')
+                    button.onclick=()=>{input.value=""};
+            }
+        </script>
+    </body>
+</html>

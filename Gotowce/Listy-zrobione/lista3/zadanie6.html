@@ -1,0 +1,47 @@
+<html>
+    <body>
+        <div id="rozdzialy">
+        <h1 id="1">Rozdzial 1<h2 id="1-1">Podrozdzial 1-1<h3 id="1-2">Podrozdzial 1-2</h3></h2></h1>
+        <h1 id="2">Rozdzial 2<h2 id="2-1">Podrozdzial 2-1</h2></h1>
+        <h1 id="3">Rozdzial 3<h2 id="3-1">Podrozdzial 3-1<h3 id="3-2">Podrozdzial 3-2</h3></h2></h1>
+        <h1>dodany by sprawdzic czy dziala przypisywanie id<h2>Podrozdzial 4-1<h3>Podrozdzial 4-2</h3></h2></h1>
+        </div>
+        <div id="toc"></div>
+        <script>
+            let spisTresci = document.getElementById("toc");
+            let znaczniki = document.querySelectorAll("#rozdzialy");
+            let podrozdzial = 1;
+            let rozdzial = 1;
+            let x = "<ol>";    //tworzy spis znacznikami
+            
+            for(let i = 0; i < znaczniki[0].children.length; i++){
+                if(znaczniki[0].children[i].localName == "h1"){
+                    if(!(znaczniki[0].children[i].previousElementSibling)) { // zaczyna liste dla pierwszego h1
+                        x+="<li><a href='#"+rozdzial+"'>Rozdział "+rozdzial+"</a><ol>";
+                    }
+                    else{ // kończy liste ol jeśli wykryto nowe h1 i robi nową
+                        if(znaczniki[0].children[i].previousElementSibling.localName == "h2")   //jezeli wczesniej bylo h2 a teraz jest h1 to zamknij liste h2 (h3 jest zamykane przy wypisywaniu h3)
+                            x += "</ol>";
+                        rozdzial++;
+                        x+="</ol><li><a href='#"+rozdzial+"'>Rozdział "+rozdzial+"</a><ol>";
+                        podrozdzial=1;      //zaczyna podrozdzialy na nowo
+                    }
+                    if(!(znaczniki[0].children[i].id)) znaczniki[0].children[i].id = rozdzial; //dodanie id jesli istnieje
+                }
+                else if(znaczniki[0].children[i].localName == "h2"){    //zaczyna podliste dla h2
+                    x += "<li><a href='#"+rozdzial+"-"+podrozdzial+"'>Podrozdział "+rozdzial+"-"+podrozdzial+"</a><ol>";
+                    if(!(znaczniki[0].children[i].id)) znaczniki[0].children[i].id=rozdzial+"-"+podrozdzial; //dodanie id jesli istnieje
+                    podrozdzial++;
+                }
+                else if(znaczniki[0].children[i].localName == "h3"){    //zaczyna podliste dla h3
+                    x += "<li><a href='#"+rozdzial+"-"+podrozdzial+"'>Podrozdział "+rozdzial+"-"+podrozdzial+"</a></ol>";
+                    if(!(znaczniki[0].children[i].id)) znaczniki[0].children[i].id=rozdzial+"-"+podrozdzial; //dodanie id jesli istnieje
+                    podrozdzial++;
+                }
+            }
+
+            x += "</ol>";
+            spisTresci.innerHTML = x;
+        </script>
+    </body>
+</html>

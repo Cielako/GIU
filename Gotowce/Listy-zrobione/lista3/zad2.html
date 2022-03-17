@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zadanie 2</title>
+</head>
+<body>
+    <form>
+        <!--<input name="a" onchange="oblicz();"> + <input name="b" onchange="oblicz();"> = <input name="c"  onchange="dostosuj();"> -->
+        <input name="a" onkeyup="oblicz();"> + <input name="b" onkeyup="oblicz();"> = <input name="c" onchange="dostosuj();">
+    </form>
+    <script>
+        // onkeyup na biezaco, onchange bo wyjsciu z pola
+        function oblicz(){
+            let inputs = document.querySelectorAll('input');
+            inputs[2].value = +inputs[0].value + +inputs[1].value;
+        }
+
+        function dostosuj(){
+            let inputs = document.querySelectorAll('input');
+            if(inputs[0].value == inputs[1].value && inputs[0].value != 0){ // gdy a i b sa takie same, uznaje ze po zmianie wyniku
+                inputs[0].value = +inputs[2].value / 2;                      // chcemy analogiczna sytuacje, a = b => a+b = c
+                inputs[1].value = +inputs[0].value;
+            }
+            else if (inputs[0].value == 0 && inputs[1].value > 0){          // gdy wartosc b > 0 i a = 0
+                inputs[0].value = +inputs[2].value - +inputs[1].value;        // to dostosowuje a =>  a = c - b
+            }
+            else if (inputs[1].value == 0 && inputs[0].value > 0){          // gdy wartosc b > 0 i a = 0
+                inputs[1].value = +inputs[2].value - +inputs[0].value;        // to dostosowuje a =>  a = c - b
+            }
+            else if (inputs[0].value == 0 && inputs[1].value == 0) {        // gdy a i b sa rowne 0
+                alert("Zbyt wiele możliwości, nie wiem, którą wybrać!");    // krzyczy ze zbyt duzo opcji i nie wie co zrobic
+            }
+            else if (inputs[2].value == 0){                                 // gdy c = 0 to a i b tez ustawi na 0
+                [inputs[0].value, inputs[1].value] = [0, 0];
+            }
+            else alert("Nie wiem, co robić!");                              // nieprzewidziana opcja
+        }
+    </script>
+</body>
+</html>

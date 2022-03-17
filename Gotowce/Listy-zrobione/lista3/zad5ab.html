@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zad 5 - SUDOKU</title>
+    <style>
+        td {
+            height: 40px;
+            width: 40px;
+            border: solid grey 1px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <button onclick="letsPlay(30);">Nowa gra</button>
+    <button onclick="losuj(30);">Losuj</button>
+    <button onclick="sprawdz();">Sprawdź</button>
+    <table></table>
+    <script>
+        let cells = [];      // plansza
+
+        // generowanie wierszy i kolumn
+        function fields() {
+            document.querySelector("table").innerHTML = "";
+            let tbody = "";
+            for (let i = 0; i < 9; i++) {
+                tbody += "<tr>";
+                for (let j = 0; j < 9; j++) {
+                    tbody += "<td></td>";
+                }
+                tbody += "</tr>";
+            }
+            document.querySelector("table").innerHTML = tbody;
+        }
+
+        // podpunkt a // losowanie wartosci 1-9 w n komorkach
+        function losuj(n) {
+            for (let i = 0; i < n; ++i) {
+                let nr = Math.floor(Math.random() * 9 + 1);
+                let id = 0;
+                let losuj = true;
+                while (losuj) {                                 // by sie nie powtarzaly id
+                    id = Math.floor(Math.random() * cells.length);
+                    if (cells[id].innerHTML == "") losuj = false;
+                }
+                cells[id].innerHTML = nr;
+            }
+        }
+
+        // podpunkt b // sprawdzanie czy sie powtarzaja
+        function sprawdz() {
+            // wiersze / kolumny / kwadraty
+            // sektory 3x3
+            for (let r = 0; r < 55; r += 27) {                          // przechodzi po sekt po lewej
+                for (let c = r; c < r + 7; c += 3) {                    // przechodzi po sektorach w wierszu
+                    let value = cells[c].innerHTML;                     // pierwsza wartosc w sektorze
+                    // wartosci z sektora -> do tabeli
+                    let sektor = [];
+                    for (let j = c; j < c + 19; j += 9) {               // kolejne wartosci lew sciany sekt 
+                        for (let v = j; v < j + 3; ++v) {               // kolejne wartosci wiersza
+                            sektor.push(cells[v].innerHTML);
+                        }
+                    }
+                    console.log(sektor);
+                    // porownanie wartosci sektora z tabeli
+                    for (let j = 0; j < sektor.length; ++j) {
+                        let value = sektor[j];
+                        for (let v = j + 1; v < sektor.length; ++v) {
+                            if (value != "" && value == sektor[v]) {
+                                alert("Powtórzenie w sektorze");
+                                return 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // kolumny
+            for (let i = 0; i < 9; ++i) {
+                for (let j = i; j < 80; j += 9) {
+                    let value = cells[j].innerHTML;         // pierwsza wartosc z kolumny
+                    for (let r = j + 9; r < 80; r += 9) {
+                        console.log("K i", i, "j", j, "r", r, value, cells[r].innerHTML)
+                        if (value != "" && value == cells[r].innerHTML) {
+                            alert("Powtórzenie w kolumnie");
+                            return 0;
+                        }
+                    }
+                }
+            }
+            
+            // wiersze
+            for (let i = 0; i < 9; ++i) {
+                for (let j = 0; j < 9; ++j) {
+                    let value = cells[i * 9 + j].innerHTML;  // pierwsza wartosc z wiersza
+                    for (let r = j + 1; r < 9; ++r) {
+                        console.log("W i", i, "j", j, "r", r, value, cells[i * 9 + r].innerHTML)
+                        if (value != "" && value == cells[i * 9 + r].innerHTML) {
+                            alert("Powtórzenie w wierszu");
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        // start
+        function letsPlay(n) {
+            fields();
+            cells = [];
+            cells = document.querySelectorAll("td");
+            losuj(n);
+            sprawdz();
+        }
+
+    </script>
+</body>
+
+</html>
