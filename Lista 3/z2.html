@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 2 Kamil Cielica</title>
+    <style>
+        .Calculator {
+            max-width: 20%;
+            background-color: lightgray;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+        input{
+            margin-top: 10px;
+        }
+        .Calculator input{
+            display: block;
+            min-height: 5vh;
+            margin-left: auto;
+            margin-right: auto ;
+        }
+        .Calculator button{
+            margin: 1px;
+            min-width: 50px;
+            min-height: 30px;
+        }
+        .Calculator .Buttons{
+            display: block;
+            margin-top: 10%;
+            margin-bottom: 10%;
+            margin-left: 8%;
+            margin-right: auto ;
+        }
+    </style>
+</head>
+<body>
+    <div class="Calculator">
+        <input type="number">
+        <div class="Buttons">
+            <button>7</button><button>8</button><button>9</button><button>*</button><button>C</button><br>
+            <button>4</button><button>5</button><button>6</button><button>/</button><br>
+            <button>1</button><button>2</button><button>3</button><button>+</button><br>
+            <button>&#8730</button><button>0</button><button>=</button><button>-</button>
+        </div>
+    </div>
+    <script>
+        let result = document.querySelector("input");
+        let buttons = document.querySelectorAll("button");
+        for (let i of buttons){
+            if (i.innerHTML == "C"){
+                i.onclick = function() {
+                    result.value = "";
+                };
+            }
+            else if (i.innerHTML == "="){
+                i.onclick = function(){ 
+                    result.value = eval(result.value);
+                };
+            }
+            else if (i.innerHTML == "√") {
+                i.onclick = function() {
+                    result.value = Math.sqrt(result.value); 
+                };
+            }
+            else {
+                i.onclick = function() {
+                    result.value += i.innerHTML;
+                };
+            }
+        }
+    </script>
+</body>
+</html>

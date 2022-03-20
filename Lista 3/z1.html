@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 1 Kamil Cielica</title>
+</head>
+<body>
+    <input type="number">+<input type="number">=<input type="number">
+<script>
+    /*  Skrypt odpowiada za obliczanie sumy z dwóch pól a i b (inputów) 
+        i wpisywaniu wyniku do pola c, dodawanie odbywa się za każdym razem, gdy
+        wciśnięty klawisz wróci do góry(pozycji bazowej), natomiast jeżeli w polu c
+        wpiszemy jakąś wartośc to zostanie ona podzielona na 2 i wpisana do pól a i b 
+    */
+    let [a, b, c] = document.querySelectorAll('input');
+    a.onpaste = b.onpaste = a.oncut = b.oncut = a.onkeyup = b.onkeyup = function f() { 
+        setTimeout(function(){ c.value = +a.value + +b.value });
+    }
+    c.onpaste = c.oncut = c.onkeyup = function g() { 
+        setTimeout(function(){ a.value = b.value = c.value / 2});
+    }
+</script>
+</body>
+</html>
