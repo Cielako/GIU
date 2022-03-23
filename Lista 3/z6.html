@@ -17,7 +17,7 @@
         }
         for(let content of document.body.childNodes){
             if(String(content) != "[object HTMLScriptElement]"){
-                var tab = content.textContent;
+                let tab = content.textContent;
                 console.log(reverseString(tab));
             }
             content.textContent = reverseString(tab);

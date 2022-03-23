@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 7 Kamil Cielica</title>
+    <style>
+        button {
+            display: block;
+            margin-left:auto ;
+        }
+    </style>
+</head>
+<body onload="generate_table()">
+    <p>Aasldk lkasd :</p>
+    <H1>Testujemy  !!!</H1>
+    <p>kazdym</p>
+    <p>Napisz skrypt, który w kazdym słowie tresci dokumentu odwróci kolejnosc liter.</p>
+    <p>zsipaN tpyrks, yrótk w mydzak eiwołs icsert utnemukod icórwdo csonjelok retil.</p>
+    <script>
+        let wordMap = new Map();
+        for(let content of document.body.childNodes){
+            if(String(content) != "[object HTMLScriptElement]" ){
+                let tab = content.textContent;
+                tab = tab.replace(/[^a-zA-Z\u0105\u0104\u0107\u0106\u0119\u0118\u0142\u0141\u0144\u0143\u00f3\u00d3\u015b\u015a\u017a\u0179\u017c\u017b ]/g, '').split(" ").filter(str => str != "" && str != "\n" );
+                for(let element  of tab){
+                    if(wordMap.has(element)){
+                        let wordCounter = wordMap.get(element);
+                        wordMap.set(element, wordCounter + 1)
+                    }
+                    else{
+                        wordMap.set(element, 1)
+                    }
+                    console.log(element);
+                    console.log(wordMap.get(element));
+                }
+            }
+        }  
+
+    function generate_table() {
+
+        // odwołanie się do ciała dokumentu html
+        let body = document.getElementsByTagName("body")[0];
+        // Tworzymy <table> i <tbody>
+        let tbl = document.createElement("table");
+        
+        let tblBody = document.createElement("tbody");
+        let butt = document.createElement("button")
+
+        butt.appendChild(document.createTextNode("X"));
+        butt.addEventListener('click', function handleClick(event) {
+            tbl.remove();
+        });
+        tbl.appendChild(butt);
+        // Tworzymy wszystkie komórki
+        for (let word of wordMap) {
+            // Tworzymy wiersze
+            let row = document.createElement("tr");
+
+            for (let j = 0; j < 1; j++) {
+        
+            let cell = document.createElement("td");
+            let cellText = document.createTextNode("Słowo: " );
+
+            let boldWord = document.createElement("b");
+            let cellTextBold = document.createTextNode(word[0]);
+            boldWord.appendChild(cellTextBold);
+            
+            cell.appendChild(cellText);
+            cell.appendChild(boldWord);
+            cell.appendChild(document.createTextNode(" "+word[1] + " razy"));  
+            row.appendChild(cell);
+            }
+
+            // Dodajw wiersz na koniec tbody
+            tblBody.appendChild(row);
+        }
+
+        // Wstaw tbody do body
+        tbl.appendChild(tblBody);
+        // Wstaw tabele do body
+        body.appendChild(tbl);
+        // Ustawiamy atrybut ramki na 2
+        tbl.setAttribute("border", "2");
+    }
+    </script>
+    
+</body>
+</html>
