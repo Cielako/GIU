@@ -23,6 +23,7 @@
         <h2>Vegetables Which Are Actually Fruits</h2>
         <h3>Tomato</h3>
         <h3>Eggplant</h3>
+        <h1>Test</h1>
     </div>
     <script>
         window.onload = function () {
@@ -38,26 +39,24 @@
                         }
 
                         if (openLevel > level) {
-                            toc += (new Array(openLevel - level + 1)).join("<ul>");
+                            toc += (new Array(openLevel - level + 1)).join("<ol>");
                         } else if (openLevel < level) {
-                            toc += (new Array(level - openLevel + 1)).join("</ul>");
+                            toc += (new Array(level - openLevel + 1)).join("</ol>");
                         }
 
                         level = parseInt(openLevel);
 
                         var anchor = titleText.replace(/ /g, "_");
-                        toc += "<li><a href=\"#" + anchor + "\">" + titleText
+                        toc += "<li><a href=\"#" + "-" + openLevel + "\">" + titleText
                             + "</a></li>";
 
-                        return "<h" + openLevel + "><a name=\"" + anchor + "\">"
+                        return "<h" + openLevel + "><a name=\"" + level + "\">"
                             + titleText + "</a></h" + closeLevel + ">";
                     }
                 );
-
             if (level) {
-                toc += (new Array(level + 1)).join("</ul>");
+                toc += (new Array(level + 1)).join("</ol>");
             }
-
             document.getElementById("toc").innerHTML += toc;
         };
     </script>

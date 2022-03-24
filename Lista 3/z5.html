@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 5 Kamil Cielica</title>
+</head>
+<body>
+    <div id="toc">
+        <h3>Spis znaczników</h3>
+    </div>
+    <hr/>
+    <div id="contents">
+        <h1>Fruits</h1>
+        <h2>Red Fruits</h2>
+        <h2>Red Fruits</h2>
+        <h2>Red Fruits</h2>
+        <h2>Red Fruits</h2>
+        <!-- <h3>Raspberry</h3>
+        <h1>Orange Fruits</h2>
+        <h2>Orange</h3>
+        <h3>Tangerine</h3>
+        <h1>Vegetables</h1>
+        <h2>Vegetables Which Are Actually Fruits</h2>
+        <h2>Vegetables Which Are Actually Fruits</h2>
+        <h3>Tomato</h3>
+        <h3>Eggplant</h2>
+        <h1>Eggplant</h1> -->
+        
+         
+    </div>
+    <script>
+        window.onload = function () {
+            let toc = document.getElementById("toc");
+            let content = document.querySelectorAll("#contents");
+            let level;
+            let subLevel = 1;
+            let final_list = "<ol>";
+                
+            for(let i = 0; i < content[0].children.length; i++){
+                if(content[0].children[i].localName == "h1"){
+
+                    // Jeśli jest 1 elementem to zostanie utworzona lista dla h1
+                    if(!(content[0].children[i].previousElementSibling)) {
+                        level = 1;
+                        final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML  + "</a><ol>";
+                    }
+                    else{
+                        if(content[0].children[i].previousSibling.localName == "h2"){
+                            final_list += "</ol>";
+                        }
+                        level++
+                        final_list += "</ol><li><a href='#" + level + "'>" + content[0].children[i].innerHTML + "</a><ol>";
+                        subLevel = 1;
+                    }
+                }
+                else if(content[0].children[i].localName == "h2"){ //zaczyna podliste dla h2
+                    final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a><ol>";
+                }
+                else if(content[0].children[i].localName == "h3"){    //zaczyna podliste dla h3
+                    final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a></ol>";
+                   
+                    // if(content[0].children[i].nextElementSibling.localName != "h3"){
+                    //     final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a></ol><ol>";
+                    // }
+                    // else{
+                    //     subLevel++;
+                    //     final_list += "<ol><li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
+                    // }
+                    // if(content[0].children[i].previousElementSibling.localName != "h3"){
+                    //     final_list += "<ol><li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
+                    // }
+                    // else{
+                    //     final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
+                    // }
+                }
+            }
+            final_list += "</ol>";
+            toc.innerHTML = final_list;
+        }
+    </script>
+</body>
+</html>

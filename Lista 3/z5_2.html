@@ -33,7 +33,11 @@
             let final_list = "<ol>";
                 
             for(let i = 0; i < content[0].children.length; i++){
-                console.log(content[0])
+                if(content[0].children[i].localName == "h1"){
+                    if(content[0].children[i].id){
+                        console.log(content[0].children[i].id)
+                    }
+                }
             }
         }
     </script>

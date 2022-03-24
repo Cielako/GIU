@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 3 Kamil Cielica</title>
+</head>
+
+<body>
+    <script>
+        function genNewGame(n, nb) { // Generowanie Tabeli+
+            let liczbaKomorek = n * n;
+            let liczbaBomb = liczbaKomorek * (nb / 100);
+            let kliknieto = 0;
+            let bomby = [];
+
+            let body = document.getElementsByTagName('body')[0];
+            let tbl = document.createElement('table');
+            tbl.setAttribute('border', '1');
+            let tbdy = document.createElement('tbody');
+
+            for (let i = 0; i < n; i++) {
+                let tr = document.createElement('tr');
+                for (let j = 0; j < n; j++) {
+                    let td = document.createElement('td');
+                    td.style.width = "40px";
+                    td.style.height = "40px";
+                    tr.appendChild(td);
+                }
+                tbdy.appendChild(tr);
+            }
+            tbl.appendChild(tbdy);
+            body.appendChild(tbl)
+            let kom = document.querySelectorAll("td");
+
+        for (let i = 0; i < liczbaBomb; i++) {
+            while (bomby.length < liczbaBomb) { // losujemy miejsca w których są bomby
+                let los = Math.floor(Math.random() * liczbaKomorek);
+                if (bomby.indexOf(los) === -1)
+                    bomby.push(los);
+            }
+            kom[bomby[i]].className = "bomba"; // przypisujemy wybranym polom klasę bomba
+        }
+        for (let i = 0; i < liczbaKomorek; i++) {
+            
+            if(i < liczbaBomb){
+                kom[bomby[i]].onclick = () => {
+                    for (let j = 0; j < liczbaKomorek; j++) {
+                        if (j < liczbaBomb) {
+                            kom[bomby[j]].style.backgroundColor = "red";
+                        }
+                        kom[j].onclick = " " // wyłączamy klikanie reszty pól
+                    }
+                    alert("Co za pech przegrałeś :(");
+                };
+            }
+
+            if (kom[i].className != "bomba") {
+                kom[i].onclick = () => {
+                    kliknieto++;
+                    let licznik = 0;
+                    if (i > n && i % n != 0){
+                        if (kom[i - (n+1)].className == "bomba") // lewy róg góra
+                            licznik++;    
+                    } 
+                    if (i > (n - 1)) {
+                        if (kom[i - n].className == "bomba")// górny
+                            licznik++;
+                    }
+                    if (i > (n - 2) && i % n != (n-1)){
+                        if (kom[i - (n-1)].className == "bomba") // prawy róg góra
+                            licznik++;
+                    } 
+                    if (i < liczbaKomorek - (n-1) && i % n != 0){
+                        if (kom[i + (n-1)].className == "bomba") // lewy dolny róg
+                            licznik++;
+                    } 
+                    if (i < liczbaKomorek - n){
+                        if (kom[i + n].className == "bomba")// dolny
+                            licznik++;
+                    } 
+                    if (i < liczbaKomorek - (n-1) && i % n != (n-1)){
+                        if (kom[i + (n+1)].className == "bomba")// prawy dolny róg
+                            licznik++; 
+                    } 
+                    if (i > 0 && i % n != 0){
+                        if (kom[i - 1].className == "bomba")// lewy
+                            licznik++;
+                    }        
+                    if (i < (liczbaKomorek - 1) && i % n != (n-1)) {
+                        if (kom[i + 1].className == "bomba")// prawy
+                            licznik++;
+                    }
+                   
+                    kom[i].innerHTML = licznik;
+                    if (kliknieto == liczbaKomorek - liczbaBomb) {
+                        alert("Brawo udało Ci się wygrać :)");
+                    }
+                }
+            }
+           
+        }
+    }
+      
+    </script>
+</body>
+</html>
