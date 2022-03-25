@@ -10,13 +10,30 @@
 
 <body>
     <script>
-        function genNewGame(n, nb) { // Generowanie Tabeli+
+        let tables = document.querySelectorAll('table');
+        let body = document.getElementsByTagName('body')[0];
+        let wymiar = 5;
+        for (let i = 1; i <= 3; i++) {
+            let but = document.createElement('button');
+            let text = document.createTextNode(i * wymiar + " x " + i * wymiar + " : " + i * wymiar + "%");
+            
+            but.onclick = () => {
+                tables = document.querySelectorAll('table');
+                if (tables.length != 0) {
+                    for (let i of tables) {
+                        body.removeChild(i);
+                    }
+                }
+                genNewGame(i * wymiar, i * wymiar);
+            }
+            but.appendChild(text);
+            body.appendChild(but);
+        }
+        function genNewGame(n, nb) { // Generowanie Tabeli
             let liczbaKomorek = n * n;
             let liczbaBomb = liczbaKomorek * (nb / 100);
             let kliknieto = 0;
             let bomby = [];
-
-            let body = document.getElementsByTagName('body')[0];
             let tbl = document.createElement('table');
             tbl.setAttribute('border', '1');
             let tbdy = document.createElement('tbody');
@@ -35,75 +52,75 @@
             body.appendChild(tbl)
             let kom = document.querySelectorAll("td");
 
-        for (let i = 0; i < liczbaBomb; i++) {
-            while (bomby.length < liczbaBomb) { // losujemy miejsca w których są bomby
-                let los = Math.floor(Math.random() * liczbaKomorek);
-                if (bomby.indexOf(los) === -1)
-                    bomby.push(los);
+            for (let i = 0; i < liczbaBomb; i++) {
+                while (bomby.length < liczbaBomb) { // losujemy miejsca w których są bomby
+                    let los = Math.floor(Math.random() * liczbaKomorek);
+                    if (bomby.indexOf(los) === -1)
+                        bomby.push(los);
+                }
+                kom[bomby[i]].className = "bomba"; // przypisujemy wybranym polom klasę bomba
             }
-            kom[bomby[i]].className = "bomba"; // przypisujemy wybranym polom klasę bomba
-        }
-        for (let i = 0; i < liczbaKomorek; i++) {
-            
-            if(i < liczbaBomb){
-                kom[bomby[i]].onclick = () => {
-                    for (let j = 0; j < liczbaKomorek; j++) {
-                        if (j < liczbaBomb) {
-                            kom[bomby[j]].style.backgroundColor = "red";
-                        }
-                        kom[j].onclick = " " // wyłączamy klikanie reszty pól
-                    }
-                    alert("Co za pech przegrałeś :(");
-                };
-            }
+            for (let i = 0; i < liczbaKomorek; i++) {
 
-            if (kom[i].className != "bomba") {
-                kom[i].onclick = () => {
-                    kliknieto++;
-                    let licznik = 0;
-                    if (i > n && i % n != 0){
-                        if (kom[i - (n+1)].className == "bomba") // lewy róg góra
-                            licznik++;    
-                    } 
-                    if (i > (n - 1)) {
-                        if (kom[i - n].className == "bomba")// górny
-                            licznik++;
-                    }
-                    if (i > (n - 2) && i % n != (n-1)){
-                        if (kom[i - (n-1)].className == "bomba") // prawy róg góra
-                            licznik++;
-                    } 
-                    if (i < liczbaKomorek - (n-1) && i % n != 0){
-                        if (kom[i + (n-1)].className == "bomba") // lewy dolny róg
-                            licznik++;
-                    } 
-                    if (i < liczbaKomorek - n){
-                        if (kom[i + n].className == "bomba")// dolny
-                            licznik++;
-                    } 
-                    if (i < liczbaKomorek - (n-1) && i % n != (n-1)){
-                        if (kom[i + (n+1)].className == "bomba")// prawy dolny róg
-                            licznik++; 
-                    } 
-                    if (i > 0 && i % n != 0){
-                        if (kom[i - 1].className == "bomba")// lewy
-                            licznik++;
-                    }        
-                    if (i < (liczbaKomorek - 1) && i % n != (n-1)) {
-                        if (kom[i + 1].className == "bomba")// prawy
-                            licznik++;
-                    }
-                   
-                    kom[i].innerHTML = licznik;
-                    if (kliknieto == liczbaKomorek - liczbaBomb) {
-                        alert("Brawo udało Ci się wygrać :)");
+                if (i < liczbaBomb) {
+                    kom[bomby[i]].onclick = () => {
+                        for (let j = 0; j < liczbaKomorek; j++) {
+                            if (j < liczbaBomb) {
+                                kom[bomby[j]].style.backgroundColor = "red";
+                            }
+                            kom[j].onclick = " " // wyłączamy klikanie reszty pól
+                        }
+                        alert("Co za pech przegrałeś :(");
+                    };
+                }
+
+                if (kom[i].className != "bomba") {
+                    kom[i].onclick = () => {
+                        kliknieto++;
+                        let licznik = 0;
+                        if (i > n && i % n != 0) {
+                            if (kom[i - (n + 1)].className == "bomba") // lewy górny róg
+                                licznik++;
+                        }
+                        if (i > (n - 1)) {
+                            if (kom[i - n].className == "bomba")// górny 
+                                licznik++;
+                        }
+                        if (i > (n - 2) && i % n != (n - 1)) {
+                            if (kom[i - (n - 1)].className == "bomba")// prawy górny
+                                licznik++;
+                        }
+                        if (i > 0 && i % n != 0) {
+                            if (kom[i - 1].className == "bomba")// lewy
+                                licznik++;
+                        }
+                        if (i < (liczbaKomorek - 1) && i % n != (n - 1)) {
+                            if (kom[i + 1].className == "bomba")// prawy
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - (n - 1) && i % n != 0) {
+                            if (kom[i + (n - 1)].className == "bomba")// lewy dolny róg
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - n) {
+                            if (kom[i + n].className == "bomba")// dolny
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - (n - 1) && i % n != (n - 1)) {
+                            if (kom[i + (n + 1)].className == "bomba")// prawy dolny róg
+                                licznik++;
+                        }
+                        kom[i].innerHTML = licznik;
+                        if (kliknieto == liczbaKomorek - liczbaBomb) {
+                            alert("Brawo udało Ci się wygrać :)");
+                        }
                     }
                 }
+
             }
-           
         }
-    }
-      
+
     </script>
 </body>
+
 </html>
