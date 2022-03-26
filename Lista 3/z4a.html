@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 4a Kamil Cielica</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            height: 40px;
+            width: 40px;
+            border: 1px solid grey;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let sudoku = []; // Pusta tablica 
+
+        // Tworzymy Pustą Plansze;
+        let body = document.querySelector("body");
+        let table = document.createElement("body");
+        let tableBody = document.createElement("tbody");
+        table.appendChild(tableBody);
+
+        function pustaTablica(){
+            for (let i = 0; i < 9; i++) { // wiersze
+                let wiersz = [];
+                for (let j = 0; j < 9; j++) { // kolumny
+                    wiersz[j] = 0;
+                }
+                sudoku[i] = wiersz; // Dodanie kolejnego Pustego wiersza wiersza
+            }
+           
+        }
+        function narysujPlansze() {
+            for (let i = 0; i < 9; i++) { // wiersze
+                let tr = document.createElement('tr');
+                //let wiersz = [];
+                for (let j = 0; j < 9; j++) { // kolumny
+                    let td = document.createElement('td');
+                    if(sudoku[i][j] != 0){
+                        let text = document.createTextNode(String(sudoku[i][j]));
+                        td.appendChild(text);
+                    }
+                    console.log(sudoku[i][j]);
+                    if ((j + 1) % 3 == 0) { // Podział kwadrwatów 3x3 pion
+                        td.style.borderRight = "2px solid black";
+                    }
+                    else if (j == 0) {
+                        td.style.borderLeft = "2px solid black";
+                    }
+
+                    if (i == 0) { // Podział kwadrwatów 3x3 poziom
+                        td.style.borderTop = "2px solid black";
+                    }
+                    else if ((i + 1) % 3 == 0) {
+                        td.style.borderBottom = "2px solid black";
+                    }
+                    tr.appendChild(td);
+                }
+                tableBody.appendChild(tr);
+                //sudoku[i] = wiersz; // Dodanie kolejnego Pustego wiersza wiersza
+            }
+            body.appendChild(table);
+            //console.log(sudoku);
+        }
+
+
+        // Zwraca true jeśli występują 2 takie same liczby w wierszu
+        function duplikatWiersz(s, y) {
+            numbers = new Array();
+            for (var i = 0; i < 9; i++) {
+                if (s[i][y] !== 0) {
+                    if (numbers.includes(s[i][y])) {
+                        return true;
+                    } else {
+                        numbers.push(s[i][y]);
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Zwraca true jeśli występują 2 takie same liczby w kolumnie
+        function duplikatKolumna(s, x) {
+            numbers = new Array();
+            for (var i = 0; i < 9; i++) {
+                if (s[x][i] !== 0) {
+                    if (numbers.includes(s[x][i])) {
+                        return true;
+                    } else {
+                        numbers.push(s[x][i]);
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Zwraca true jeśli występują 2 takie same liczby w kwadracie
+        function duplikatKwadrat(s, x, y) {
+            boxX = Math.floor(x / 3);
+            boxY = Math.floor(y / 3);
+            numbers = new Array();
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    x = i + 3 * boxX;
+                    y = j + 3 * boxY;
+                    if (s[x][y] !== 0) {
+                        if (numbers.includes(s[x][y])) {
+                            return true;
+                        } else {
+                            numbers.push(s[x][y]);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Zwraca true jeśli występują 2 takie same liczby w wierszu, komórce lub kwadracie
+        function czyDuplikat(s, x, y) {
+            if (duplikatWiersz(s, y)) {
+                return true;
+            }
+            if (duplikatKolumna(s, x)) {
+                return true;
+            }
+            if (duplikatKwadrat(s, x, y)) {
+                return true;
+            }
+            return false;
+        }
+
+        function generujPlansze(n) {
+            pustaTablica();
+            let wpisaneLiczby = 0;
+            while (wpisaneLiczby < n) {
+                let x = Math.floor(Math.random() * 9);
+                let y = Math.floor(Math.random() * 9);
+                let number = Math.floor(Math.random() * 9) + 1;
+
+                if (sudoku[x][y] === 0) {
+                    sudoku[x][y] = number;
+                    if (czyDuplikat(sudoku, x, y)) {
+                        sudoku[x][y] = 0;
+                        continue;
+                    } else {
+                        wpisaneLiczby++;
+                    }
+                    console.log(number + ":" + wpisaneLiczby);
+                }
+            }
+            narysujPlansze();
+        }
+        generujPlansze(60);
+    </script>
+</body>
+
+</html>

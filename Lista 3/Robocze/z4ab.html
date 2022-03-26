@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 4 Kamil Cielica</title>
+    <style>
+        td {
+            height: 55px;
+            width: 55px;
+            border: 1px solid grey;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        select {/*width: 55px; height: 55px;*/border: 0px solid white}
+    </style>
+</head>
+
+<body>
+    <div id="komunikat" style="font-size: 2em;"></div>
+    <table>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    <button onclick="losujzesprawdzeniem(1)">LosujZeSprawdzeniem</button>
+</body>
+<script>
+    let komórka = document.querySelectorAll("td");
+    let but = document.querySelectorAll("button");
+    let niePuste = [];
+    function losujzesprawdzeniem(n) {
+            for (let i = 0; i < 81; i++) {   //czyszczenie
+                komórka[i].innerHTML = "";
+                document.getElementById("komunikat").innerHTML = "";
+                
+                // komórka[i].onclick=()=>{
+                //     komórka[i].innerHTML="";
+                //     helper();
+                // }
+
+            }
+            
+            let tak = true;     //do while'a sprawdzajacego
+            let tak2 = true;    //do while'a losujacego komorke
+            let odlegloscPoziom;
+            let odlegloscPion;
+
+            for (let i = 0; i < n; i++) {
+                tak = true;
+                tak2 = true;
+                while (tak2) {   // losuje miejsce w ktorym nie ma liczby zadnej
+                    niePuste[i] = Math.floor(Math.random() * 81);
+                    if (komórka[niePuste[i]].innerHTML == "") tak2 = false;
+                }
+                while(tak){
+                    komórka[niePuste[i]].innerHTML = Math.floor(Math.random() * 9 + 1);
+                    
+                    let kolumna = false; 
+                    let wiersz = false;
+                    let pole = false;
+
+                    odlegloscPoziom = niePuste[i]%9;              //odleglosc komórki od lewej sciany
+                    odlegloscPion = Math.floor(niePuste[i]/9);    //odleglosc komórki od gornej sciany
+
+                    for(let j=odlegloscPoziom;j<81;j+=9){  //kolumny
+                        if(j != niePuste[i]){
+                            if(komórka[j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                kolumna = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(kolumna == false){
+                        for(let j=odlegloscPion*9; j<(odlegloscPion*9+9); j++){  //wiersze
+                            if(j != niePuste[i]){
+                                if(komórka[j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                    wiersz = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    let w = 0;
+                    let k = 0;
+                    if(niePuste[i]>=0 && niePuste[i]<=2 || niePuste[i]>=9 && niePuste[i]<=11 || niePuste[i]>=18 && niePuste[i]<=20) {w=0; k=0;}
+                    else if(niePuste[i]>=3 && niePuste[i]<=5 || niePuste[i]>=12 && niePuste[i]<=14 || niePuste[i]>=21 && niePuste[i]<=23) {w=0; k=1;}
+                    else if(niePuste[i]>=6 && niePuste[i]<=8 || niePuste[i]>=15 && niePuste[i]<=17 || niePuste[i]>=24 && niePuste[i]<=26) {w=0; k=2;}
+
+                    else if(niePuste[i]>=27 && niePuste[i]<=29 || niePuste[i]>=36 && niePuste[i]<=38 || niePuste[i]>=45 && niePuste[i]<=47) {w=27; k=0;}
+                    else if(niePuste[i]>=30 && niePuste[i]<=32 || niePuste[i]>=39 && niePuste[i]<=41 || niePuste[i]>=48 && niePuste[i]<=50) {w=27; k=1;}
+                    else if(niePuste[i]>=33 && niePuste[i]<=35 || niePuste[i]>=42 && niePuste[i]<=44 || niePuste[i]>=51 && niePuste[i]<=53) {w=27; k=2;}
+                    
+                    else if(niePuste[i]>=54 && niePuste[i]<=56 || niePuste[i]>=63 && niePuste[i]<=65 || niePuste[i]>=72 && niePuste[i]<=74) {w=54; k=0;}
+                    else if(niePuste[i]>=57 && niePuste[i]<=59 || niePuste[i]>=66 && niePuste[i]<=68 || niePuste[i]>=75 && niePuste[i]<=77) {w=54; k=1;}
+                    else if(niePuste[i]>=60 && niePuste[i]<=62 || niePuste[i]>=69 && niePuste[i]<=71 || niePuste[i]>=78 && niePuste[i]<=80) {w=54; k=2;}
+                    
+                    for(let z = w; z<w+27; z+=9){                
+                        for(let j = k*3; j<((k*3)+3); j++){
+                            if( z+j != niePuste[i] ){
+                                if(komórka[z+j].innerHTML == komórka[niePuste[i]].innerHTML){
+                                    pole = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(pole == true) break;
+                    }
+                    if(kolumna == false && wiersz == false && pole == false) tak = false;
+                }
+            }
+        }
+
+</script>
+</html>

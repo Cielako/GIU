@@ -34,9 +34,9 @@
             let liczbaBomb = liczbaKomorek * (nb / 100);
             let kliknieto = 0;
             let bomby = [];
-            let tbl = document.createElement('table');
-            tbl.setAttribute('border', '1');
-            let tbdy = document.createElement('tbody');
+            let table = document.createElement('table');
+            table.setAttribute('border', '1');
+            let tableBody = document.createElement('tbody');
 
             for (let i = 0; i < n; i++) {
                 let tr = document.createElement('tr');
@@ -46,10 +46,10 @@
                     td.style.height = "40px";
                     tr.appendChild(td);
                 }
-                tbdy.appendChild(tr);
+                tableBody.appendChild(tr);
             }
-            tbl.appendChild(tbdy);
-            body.appendChild(tbl)
+            table.appendChild(tableBody);
+            body.appendChild(table)
             let kom = document.querySelectorAll("td");
 
             for (let i = 0; i < liczbaBomb; i++) {
@@ -106,7 +106,7 @@
                             if (kom[i + n].className == "bomba")// dolny
                                 licznik++;
                         }
-                        if (i < liczbaKomorek - (n - 1) && i % n != (n - 1)) {
+                        if (i < liczbaKomorek - (n + 1) && i % n != (n - 1)) {
                             if (kom[i + (n + 1)].className == "bomba")// prawy dolny róg
                                 licznik++;
                         }

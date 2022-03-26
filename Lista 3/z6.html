@@ -13,14 +13,12 @@
     <p>zsipaN tpyrks, yrótk w mydzak eiwołs icsert utnemukod icórwdo csonjelok retil.</p>
     <script>
         function reverseString (str) {
-            return str.replace(/[a-zA-Z\u0105\u0104\u0107\u0106\u0119\u0118\u0142\u0141\u0144\u0143\u00f3\u00d3\u015b\u015a\u017a\u0179\u017c\u017b]+/gi, function(s){return s.split("").reverse().join("")}); // modyfikujemy string przed podmianą 
+            return str.replace(/[a-zA-Z\u0105\u0104\u0107\u0106\u0119\u0118\u0142\u0141\u0144\u0143\u00f3\u00d3\u015b\u015a\u017a\u0179\u017c\u017b]+/gi, function(str){return str.split("").reverse().join("")}); // modyfikujemy string przed podmianą 
         }
         for(let content of document.body.childNodes){
             if(String(content) != "[object HTMLScriptElement]"){
-                let tab = content.textContent;
-                console.log(reverseString(tab));
+                content.textContent = reverseString(content.textContent);   
             }
-            content.textContent = reverseString(tab);
         }  
     </script>
     

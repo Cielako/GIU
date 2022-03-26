@@ -12,30 +12,30 @@
     </div>
     <hr/>
     <div id="contents">
-        <h1>Fruits</h1>
-        <h2>Red Fruits</h2>
-        <h2>Red Fruits</h2>
-        <h2>Red Fruits</h2>
-        <h2>Red Fruits</h2>
-        <!-- <h3>Raspberry</h3>
-        <h1>Orange Fruits</h2>
-        <h2>Orange</h3>
-        <h3>Tangerine</h3>
-        <h1>Vegetables</h1>
-        <h2>Vegetables Which Are Actually Fruits</h2>
-        <h2>Vegetables Which Are Actually Fruits</h2>
-        <h3>Tomato</h3>
-        <h3>Eggplant</h2>
-        <h1>Eggplant</h1> -->
-        
-         
+        <h1>Tom i Jerry</h1>
+        <h2>Jhonny Bravo</h2>
+        <h2>Harry Potter</h2>
+        <h2>WWE</h2>
+        <h2>Asterix i Obelix</h2>
+        <h1>Pocahontas</h1>
+        <h2>Zagininoa Atlantyda</h2>
+        <h2>Star Wars</h2>
+        <h2>Atomówki</h2>
+        <h2>Oszukać Przeznaczenie</h2>
+        <h3>Terminator</h3>
+        <h1>Szklana Pułapka</h1>
+        <h2>Lilo i Stich</h2>
+        <h1>Szybcy i Wściekli</h1>
+        <h2>Forrest Gump</h2>
+        <h1>Kevin sam w domu</h1>
     </div>
     <script>
         window.onload = function () {
             let toc = document.getElementById("toc");
             let content = document.querySelectorAll("#contents");
-            let level;
+            let level = 1;
             let subLevel = 1;
+            let subsublevel = 1;
             let final_list = "<ol>";
                 
             for(let i = 0; i < content[0].children.length; i++){
@@ -44,37 +44,55 @@
                     // Jeśli jest 1 elementem to zostanie utworzona lista dla h1
                     if(!(content[0].children[i].previousElementSibling)) {
                         level = 1;
+                        content[0].children[i].id=level;
                         final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML  + "</a><ol>";
                     }
                     else{
-                        if(content[0].children[i].previousSibling.localName == "h2"){
-                            final_list += "</ol>";
-                        }
-                        level++
-                        final_list += "</ol><li><a href='#" + level + "'>" + content[0].children[i].innerHTML + "</a><ol>";
+                        content[0].children[i].id=level;
+                        final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML + "</a>";
                         subLevel = 1;
+                        if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                            final_list += "<ol>";
+                            
+                        }
+                        if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3"){
+                            final_list += "<ol><ol>";
+                            
+                        }
+                        
                     }
                 }
-                else if(content[0].children[i].localName == "h2"){ //zaczyna podliste dla h2
-                    final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a><ol>";
+                else if(content[0].children[i].localName == "h2"){
+                    content[0].children[i].id=level+ "-" +subLevel;
+                    final_list += "<li><a href='#" + level+ "-" +subLevel + "'>" + content[0].children[i].innerHTML + "</a>";
+                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1"){
+                        final_list += "</ol>"
+                        level++;
+                    }
+                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                        subLevel++;
+                    }
+                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3"){
+                        final_list += "<ol>"
+                    }
                 }
-                else if(content[0].children[i].localName == "h3"){    //zaczyna podliste dla h3
-                    final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a></ol>";
-                   
-                    // if(content[0].children[i].nextElementSibling.localName != "h3"){
-                    //     final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a></ol><ol>";
-                    // }
-                    // else{
-                    //     subLevel++;
-                    //     final_list += "<ol><li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
-                    // }
-                    // if(content[0].children[i].previousElementSibling.localName != "h3"){
-                    //     final_list += "<ol><li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
-                    // }
-                    // else{
-                    //     final_list += "<li><a href='#" + level + "-" + subLevel + "'>"  + content[0].children[i].innerHTML +  "</a>";
-                    // }
+                else if(content[0].children[i].localName == "h3"){
+                    content[0].children[i].id=level+ "-" +subLevel + "-" +subsublevel;
+                    final_list += "<li><a href='#" + level+ "-" +subLevel + "-" +subsublevel + "'>" + content[0].children[i].innerHTML + "</a>";
+                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1"){
+                        level++;
+                        subsublevel = 1;
+                        final_list += "</ol></ol>"
+                    }
+                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                        subLevel++;
+                        subsublevel = 1;
+                        final_list += "</ol>"
+                    }
+
                 }
+               
+
             }
             final_list += "</ol>";
             toc.innerHTML = final_list;
