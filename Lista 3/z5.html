@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>zadanie 5 Kamil Cielica</title>
 </head>
+
 <body>
     <div id="toc">
         <h3>Spis znaczników</h3>
     </div>
-    <hr/>
+    <hr />
     <div id="contents">
         <h1>Tom i Jerry</h1>
         <h2>Jhonny Bravo</h2>
@@ -37,61 +39,61 @@
             let subLevel = 1;
             let subsublevel = 1;
             let final_list = "<ol>";
-                
-            for(let i = 0; i < content[0].children.length; i++){
-                if(content[0].children[i].localName == "h1"){
+
+            for (let i = 0; i < content[0].children.length; i++) {
+                if (content[0].children[i].localName == "h1") {
 
                     // Jeśli jest 1 elementem to zostanie utworzona lista dla h1
-                    if(!(content[0].children[i].previousElementSibling)) {
+                    if (!(content[0].children[i].previousElementSibling)) {
                         level = 1;
-                        content[0].children[i].id=level;
-                        final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML  + "</a><ol>";
+                        content[0].children[i].id = level;
+                        final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML + "</a><ol>";
                     }
-                    else{
-                        content[0].children[i].id=level;
+                    else {
+                        content[0].children[i].id = level;
                         final_list += "<li><a href='#" + level + "'>" + content[0].children[i].innerHTML + "</a>";
                         subLevel = 1;
-                        if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                        if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2") {
                             final_list += "<ol>";
-                            
+
                         }
-                        if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3"){
+                        if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3") {
                             final_list += "<ol><ol>";
-                            
+
                         }
-                        
+
                     }
                 }
-                else if(content[0].children[i].localName == "h2"){
-                    content[0].children[i].id=level+ "-" +subLevel;
-                    final_list += "<li><a href='#" + level+ "-" +subLevel + "'>" + content[0].children[i].innerHTML + "</a>";
-                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1"){
+                else if (content[0].children[i].localName == "h2") {
+                    content[0].children[i].id = level + "-" + subLevel;
+                    final_list += "<li><a href='#" + level + "-" + subLevel + "'>" + content[0].children[i].innerHTML + "</a>";
+                    if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1") {
                         final_list += "</ol>"
                         level++;
                     }
-                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                    if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2") {
                         subLevel++;
                     }
-                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3"){
+                    if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h3") {
                         final_list += "<ol>"
                     }
                 }
-                else if(content[0].children[i].localName == "h3"){
-                    content[0].children[i].id=level+ "-" +subLevel + "-" +subsublevel;
-                    final_list += "<li><a href='#" + level+ "-" +subLevel + "-" +subsublevel + "'>" + content[0].children[i].innerHTML + "</a>";
-                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1"){
+                else if (content[0].children[i].localName == "h3") {
+                    content[0].children[i].id = level + "-" + subLevel + "-" + subsublevel;
+                    final_list += "<li><a href='#" + level + "-" + subLevel + "-" + subsublevel + "'>" + content[0].children[i].innerHTML + "</a>";
+                    if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h1") {
                         level++;
                         subsublevel = 1;
                         final_list += "</ol></ol>"
                     }
-                    if(content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2"){
+                    if (content[0].children[i].nextElementSibling && content[0].children[i].nextElementSibling.localName == "h2") {
                         subLevel++;
                         subsublevel = 1;
                         final_list += "</ol>"
                     }
 
                 }
-               
+
 
             }
             final_list += "</ol>";
@@ -99,4 +101,5 @@
         }
     </script>
 </body>
+
 </html>

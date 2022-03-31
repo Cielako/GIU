@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>zadanie 6 Kamil Cielica</title>
 </head>
+
 <body>
     <p>Aasldk lkasd :</p>
-    <H1>Testujemy  !!!</H1>
+    <H1>Testujemy !!!</H1>
     <p>Napisz skrypt, który w kazdym słowie tresci dokumentu odwróci kolejnosc liter.</p>
-    <p>zsipaN tpyrks, yrótk w mydzak eiwołs icsert utnemukod icórwdo csonjelok retil.</p>
+    <p>zsipaN tpyrks, yrótk w mydzak eiwołs icsert utnemukod icórwdo csonjelok retil. <b>kotek</b></p>
     <script>
-        function reverseString (str) {
-            return str.replace(/[a-zA-Z\u0105\u0104\u0107\u0106\u0119\u0118\u0142\u0141\u0144\u0143\u00f3\u00d3\u015b\u015a\u017a\u0179\u017c\u017b]+/gi, function(str){return str.split("").reverse().join("")}); // modyfikujemy string przed podmianą 
+        function reverseString(str) {
+            return str.replace(/[a-zA-Z\u0105\u0104\u0107\u0106\u0119\u0118\u0142\u0141\u0144\u0143\u00f3\u00d3\u015b\u015a\u017a\u0179\u017c\u017b]+/gi, function (str) { return str.split("").reverse().join("") }); // modyfikujemy string przed podmianą 
         }
-        for(let content of document.body.childNodes){
-            if(String(content) != "[object HTMLScriptElement]"){
-                content.textContent = reverseString(content.textContent);   
+        for (let content of document.body.childNodes) {
+            if (String(content) != "[object HTMLScriptElement]") {
+                content.textContent = reverseString(content.textContent);
             }
         }  
     </script>
-    
+
 </body>
+
 </html>

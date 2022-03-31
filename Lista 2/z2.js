@@ -6,7 +6,7 @@ Fibo.prototype.next = function(){
     let current = this.a;
     this.a = this.b;
     this.b = current + this.b;
-    return {value : BigInt(current)}
+    return {value : BigInt(current), done : false}
 }
 let z2 = new Fibo();
 

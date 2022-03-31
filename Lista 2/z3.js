@@ -24,11 +24,11 @@ function* fragment(iter, skip, limit){
             skip = 0;
         }
         else{
-            console.log(`elementy do pominięcia: ${skip} `);
+            console.log(`element do pominięcia: ${i} `);
             skip--;
         }
     }
 }
 
-for(let fib of fragment(fibonacci(), 1, 10)) 
+for(let fib of fragment(fibonacci(), 2, 10)) 
     console.log(fib);

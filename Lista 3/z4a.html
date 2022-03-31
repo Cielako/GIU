@@ -31,7 +31,7 @@
         let tableBody = document.createElement("tbody");
         table.appendChild(tableBody);
 
-        function pustaTablica(){
+        function pustaTablica() {
             for (let i = 0; i < 9; i++) { // wiersze
                 let wiersz = [];
                 for (let j = 0; j < 9; j++) { // kolumny
@@ -39,7 +39,7 @@
                 }
                 sudoku[i] = wiersz; // Dodanie kolejnego Pustego wiersza wiersza
             }
-           
+
         }
         function narysujPlansze() {
             for (let i = 0; i < 9; i++) { // wiersze
@@ -47,7 +47,7 @@
                 //let wiersz = [];
                 for (let j = 0; j < 9; j++) { // kolumny
                     let td = document.createElement('td');
-                    if(sudoku[i][j] != 0){
+                    if (sudoku[i][j] != 0) {
                         let text = document.createTextNode(String(sudoku[i][j]));
                         td.appendChild(text);
                     }

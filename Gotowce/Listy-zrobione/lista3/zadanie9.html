@@ -58,6 +58,7 @@
             for(let x of document.body.childNodes){
                 if(String(x) != '[object HTMLScriptElement]'){  //wykluczenie scryptu 
                     let slowa = x.textContent.replace(/(\r\n|\n|\r)/gm, "").split(/[^A-Za-z0-9-zżźćńółęąśŻŹĆĄŚĘŁÓŃ_]+/).filter(w => w != ''); //filtrowanie pomija puste pola
+                    console.log(slowa);
                     for(let slowo of slowa){
                         if(myMap.has(slowo)){
                             myMap.set(slowo, myMap.get(slowo) + 1);
