@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadanie 3 Kamil Cielica</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div>
+        <ul id="users"></ul>
+        <input type='text' id='txtmessage' />
+        <ul id='messages'></ul>
+        <button id='reset'>Reset</button>
+    </div>
+    <script>
+        let nick = prompt("Podaj swój nick");
+
+        let socket = io();
+        let userID;
+        socket.emit("nickname", nick);
+
+
+
+        let messages = document.getElementById('messages');
+        let reset_button = document.getElementById('reset');
+        let msg_input = document.getElementById('txtmessage');
+        let user = document.querySelector("#users");
+        let stopG = false;
+
+
+        msg_input.focus();
+
+        // odbieranie wiadomości 
+        socket.on('chat message', function (data) {
+            messages.innerHTML += "<li>" + data + "</li>";
+        });
+
+        // odbieranie wiadomości o resecie
+        socket.on('reset', function (msg) {
+            messages.innerHTML = "<li>" + msg + "</li>";
+        });
+
+
+        // wysyłanie wiadomości
+        msg_input.addEventListener('change', function () {
+            socket.emit('chat message', "<b>" + nick + ":</b> " + this.value);
+            this.value = '';
+
+        });
+
+        // wysyłanie wiadomości o resecie
+        reset_button.addEventListener('click', function () {
+            tables = document.querySelectorAll('table');
+            if (tables.length != 0) {
+                for (let i of tables) {
+                    body.removeChild(i);
+                }
+            }
+            //socket.emit("restartGame", true);
+            genNewGame(wymiar, 10);
+            socket.emit('reset', "Witaj");
+        });
+
+        // Przesyłamy graczowi, którym graczem jest
+        socket.on("users", function (list) {
+            if (user.children.length > 0) {
+                //do nothing
+            }
+            else
+                user.innerHTML = list;
+        });
+
+        // odbieranie wiadomości o przyznanym id
+        socket.on('id', function (msg) {
+            console.log(msg);
+            userID = msg;
+            console.log(userID);
+            genNewGame(wymiar, 10);
+        });
+
+        //Stopowanie gry po wygranej gracza
+        socket.on('stopGame', function (sID) {
+            stopG = true
+            if (userID == sID) {
+                console.log(stopG);
+            }
+        });
+        console.log(stopG);
+
+        let tables = document.querySelectorAll('table');
+        let body = document.querySelector('body');
+        let wymiar = 10;
+        function genNewGame(n, nb) { // Generowanie Tabeli
+            let liczbaKomorek = n * n;
+            let liczbaBomb = Math.floor((liczbaKomorek * (nb / 100)));
+            let kliknieto = 0;
+            let bomby = [];
+            let table = document.createElement('table');
+            table.setAttribute('border', '1');
+            let tableBody = document.createElement('tbody');
+
+            for (let i = 0; i < n; i++) {
+                let tr = document.createElement('tr');
+                for (let j = 0; j < n; j++) {
+                    let td = document.createElement('td');
+                    td.style.width = "40px";
+                    td.style.height = "40px";
+                    tr.appendChild(td);
+                }
+                tableBody.appendChild(tr);
+            }
+            table.appendChild(tableBody);
+            body.appendChild(table)
+            let kom = document.querySelectorAll("td");
+
+            for (let i = 0; i < liczbaBomb; i++) {
+                while (bomby.length < liczbaBomb) { // losujemy miejsca w których są bomby
+                    let los = Math.floor(Math.random() * liczbaKomorek);
+                    if (bomby.indexOf(los) === -1)
+                        bomby.push(los);
+                }
+                kom[bomby[i]].className = "bomba"; // przypisujemy wybranym polom klasę bomba
+            }
+            for (let i = 0; i < liczbaKomorek; i++) {
+                if (i < liczbaBomb) {
+                
+                    kom[bomby[i]].onclick = () => {
+                        for (let j = 0; j < liczbaKomorek; j++) {
+                            if (j < liczbaBomb) {
+                                kom[bomby[j]].style.backgroundColor = "red";
+                            }
+                            kom[j].onclick = " " // wyłączamy klikanie reszty pól
+                        }
+                        // Zwrócenie który gracz wygrał rozgrywke
+                        if (userID == 0)
+                            socket.emit("winner", 1);
+                        else if (userID == 1)
+                            socket.emit("winner", 0);
+                        alert("Co za pech przegrałeś :(");
+                    };
+                }
+                if (kom[i].className != "bomba") {
+                    kom[i].onclick = () => {
+                        if (kom[i].className) {
+                            // do nothing
+                        } else {
+                            kom[i].className = "klik";
+                            kliknieto++;
+                        }
+
+                        console.log(kliknieto)
+                        let licznik = 0;
+                        if (i > n && i % n != 0) {
+                            if (kom[i - (n + 1)].className == "bomba") // lewy górny róg
+                                licznik++;
+                        }
+                        if (i > (n - 1)) {
+                            if (kom[i - n].className == "bomba")// górny 
+                                licznik++;
+                        }
+                        if (i > (n - 2) && i % n != (n - 1)) {
+                            if (kom[i - (n - 1)].className == "bomba")// prawy górny
+                                licznik++;
+                        }
+                        if (i > 0 && i % n != 0) {
+                            if (kom[i - 1].className == "bomba")// lewy
+                                licznik++;
+                        }
+                        if (i < (liczbaKomorek - 1) && i % n != (n - 1)) {
+                            if (kom[i + 1].className == "bomba")// prawy
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - (n - 1) && i % n != 0) {
+                            if (kom[i + (n - 1)].className == "bomba")// lewy dolny róg
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - n) {
+                            if (kom[i + n].className == "bomba")// dolny
+                                licznik++;
+                        }
+                        if (i < liczbaKomorek - (n + 1) && i % n != (n - 1)) {
+                            if (kom[i + (n + 1)].className == "bomba")// prawy dolny róg
+                                licznik++;
+                        }
+                        kom[i].innerHTML = licznik;
+                        if (kliknieto == (liczbaKomorek - liczbaBomb)) {
+                            alert("Brawo udało Ci się wygrać :)");
+                            socket.emit("winner", userID);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
