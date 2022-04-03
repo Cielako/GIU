@@ -24,8 +24,6 @@
         let userID;
         socket.emit("nickname", nick);
 
-
-
         let messages = document.getElementById('messages');
         let reset_button = document.getElementById('reset');
         let msg_input = document.getElementById('txtmessage');
@@ -61,9 +59,28 @@
                     body.removeChild(i);
                 }
             }
-            //socket.emit("restartGame", true);
             genNewGame(wymiar, 10);
+            // Przesyłamy przegranemu użytkownikowi sygnał o resecie gry;
+            if (userID == 0) {
+                socket.emit('restartGame', 1);
+            }
+            if (userID == 1) {
+                socket.emit('restartGame', 0);
+            }
             socket.emit('reset', "Witaj");
+        });
+        // Restart gry i czatu 
+        socket.on('startNewGame', function (newGame) {
+            if (newGame == userID) {
+
+                tables = document.querySelectorAll('table');
+                if (tables.length != 0) {
+                    for (let i of tables) {
+                        body.removeChild(i);
+                    }
+                }
+                genNewGame(wymiar, 10);
+            }
         });
 
         // Przesyłamy graczowi, którym graczem jest
@@ -77,9 +94,8 @@
 
         // odbieranie wiadomości o przyznanym id
         socket.on('id', function (msg) {
-            console.log(msg);
-            userID = msg;
-            console.log(userID);
+            // console.log(msg);
+            // userID = msg;
             genNewGame(wymiar, 10);
         });
 
@@ -87,11 +103,17 @@
         socket.on('stopGame', function (sID) {
             stopG = true
             if (userID == sID) {
-                console.log(stopG);
+                let kom = document.querySelectorAll("td");
+                for (let k of kom) {
+                    alert("Brawo udało Ci się wygrać :)");
+                    k.onclick = '';
+                    if (k.className == "bomba")
+                        k.style.backgroundColor = "red";
+                }
             }
-        });
-        console.log(stopG);
 
+        });
+        // Kod gry
         let tables = document.querySelectorAll('table');
         let body = document.querySelector('body');
         let wymiar = 10;
@@ -128,7 +150,7 @@
             }
             for (let i = 0; i < liczbaKomorek; i++) {
                 if (i < liczbaBomb) {
-                
+
                     kom[bomby[i]].onclick = () => {
                         for (let j = 0; j < liczbaKomorek; j++) {
                             if (j < liczbaBomb) {

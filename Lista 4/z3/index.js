@@ -14,7 +14,7 @@ let server = http.createServer(function (req, res) { // function to handle reque
 let io = socket(server);
 let id = 0; // id dla nowego użytkownika
 let players = {}; // Lista użytkowników
-let winnerr;
+
 
 io.on('connection', function (socket) {
     // powstaje nowy socket z którym będziemy gadać z kolejnym klientem
@@ -71,28 +71,23 @@ io.on('connection', function (socket) {
         rozmowa.push(msg)
         io.emit('chat message', msg); // do wszystkich
     });
-
+    // Restetujemy cały zapis rozomowy
     socket.on('reset', function (msg) {
         rozmowa = [msg]
         io.emit('reset', msg); // do wszystkich
     });
-
+    // Zwracamy wygranemu użytkownikowi komunikat
     socket.on('winner', function (msg) {
-        // winner[msg] = true;
-        // console.log(winner[msg]);
-        winnerr = msg;
-        console.log(winnerr + "dsasd")
-        if (winnerr == 0)
+        if (msg == 0)
             io.emit("stopGame", 0);
-        if (winnerr == 1)
+        if (msg == 1)
             io.emit("stopGame", 1);
         io.emit('reset', `Gracz o nazwie ${players[msg]} wygrał rozgrywke`); // do wszystkich
     });
-    //winner = undefined;
-    // socket.on('restartGame', function (rg) {
 
-    // });
-
+    socket.on('restartGame', function (userID) {
+        io.emit('startNewGame', userID);
+    });
 });
 
 

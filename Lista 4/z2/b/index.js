@@ -1,4 +1,4 @@
-// a) JSON version
+// b) HTML version
 let http = require('http');
 let fs = require('fs');
 let socket = require('socket.io');
