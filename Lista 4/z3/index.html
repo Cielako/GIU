@@ -95,7 +95,7 @@
         // odbieranie wiadomości o przyznanym id
         socket.on('id', function (msg) {
             // console.log(msg);
-            // userID = msg;
+            userID = msg;
             genNewGame(wymiar, 10);
         });
 
