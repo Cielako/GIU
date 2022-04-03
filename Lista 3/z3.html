@@ -31,7 +31,7 @@
         }
         function genNewGame(n, nb) { // Generowanie Tabeli
             let liczbaKomorek = n * n;
-            let liczbaBomb = liczbaKomorek * (nb / 100);
+            let liczbaBomb = Math.floor((liczbaKomorek * (nb / 100)));
             let kliknieto = 0;
             let bomby = [];
             let table = document.createElement('table');
@@ -76,7 +76,15 @@
 
                 if (kom[i].className != "bomba") {
                     kom[i].onclick = () => {
-                        kliknieto++;
+                        if(kom[i].className){
+                            // do nothing
+                        }else{
+                            kom[i].className = "klik";
+                            console.log(`Liczba Komórek: ${liczbaKomorek-liczbaBomb}`)
+                            kliknieto++;
+                        }
+                           
+                        console.log(kliknieto)
                         let licznik = 0;
                         if (i > n && i % n != 0) {
                             if (kom[i - (n + 1)].className == "bomba") // lewy górny róg
@@ -111,7 +119,7 @@
                                 licznik++;
                         }
                         kom[i].innerHTML = licznik;
-                        if (kliknieto == liczbaKomorek - liczbaBomb) {
+                        if (kliknieto == (liczbaKomorek - liczbaBomb)) {
                             alert("Brawo udało Ci się wygrać :)");
                         }
                     }
