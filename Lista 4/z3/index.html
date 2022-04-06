@@ -53,21 +53,26 @@
 
         // wysyłanie wiadomości o resecie
         reset_button.addEventListener('click', function () {
-            tables = document.querySelectorAll('table');
-            if (tables.length != 0) {
-                for (let i of tables) {
-                    body.removeChild(i);
+            if (userID == 0 || userID == 1) {
+                tables = document.querySelectorAll('table');
+                if (tables.length != 0) {
+                    for (let i of tables) {
+                        body.removeChild(i);
+                    }
                 }
-            }
-            genNewGame(wymiar, 10);
-            // Przesyłamy przegranemu użytkownikowi sygnał o resecie gry;
-            if (userID == 0) {
-                socket.emit('restartGame', 1);
-            }
-            if (userID == 1) {
-                socket.emit('restartGame', 0);
-            }
-            socket.emit('reset', "Witaj");
+                genNewGame(wymiar, 10);
+                // Przesyłamy przegranemu użytkownikowi sygnał o resecie gry;
+                if (userID == 0) {
+                    socket.emit('restartGame', 1);
+                }
+                if (userID == 1) {
+                    socket.emit('restartGame', 0);
+                }
+                socket.emit('reset', "Witaj");
+            }else
+                reset_button.setAttribute("disabled", "true");
+
+           
         });
         // Restart gry i czatu 
         socket.on('startNewGame', function (newGame) {
@@ -94,18 +99,17 @@
 
         // odbieranie wiadomości o przyznanym id
         socket.on('id', function (msg) {
-            // console.log(msg);
+            console.log(msg);
             userID = msg;
             genNewGame(wymiar, 10);
         });
 
         //Stopowanie gry po wygranej gracza
         socket.on('stopGame', function (sID) {
-            stopG = true
+            console.log("Twój sID" + sID);
             if (userID == sID) {
                 let kom = document.querySelectorAll("td");
                 for (let k of kom) {
-                    alert("Brawo udało Ci się wygrać :)");
                     k.onclick = '';
                     if (k.className == "bomba")
                         k.style.backgroundColor = "red";
@@ -116,7 +120,7 @@
         // Kod gry
         let tables = document.querySelectorAll('table');
         let body = document.querySelector('body');
-        let wymiar = 10;
+        let wymiar = 5;
         function genNewGame(n, nb) { // Generowanie Tabeli
             let liczbaKomorek = n * n;
             let liczbaBomb = Math.floor((liczbaKomorek * (nb / 100)));
@@ -160,9 +164,9 @@
                         }
                         // Zwrócenie który gracz wygrał rozgrywke
                         if (userID == 0)
-                            socket.emit("winner", 1);
+                            socket.emit("winBomb", 1);
                         else if (userID == 1)
-                            socket.emit("winner", 0);
+                            socket.emit("winBomb", 0);
                         alert("Co za pech przegrałeś :(");
                     };
                 }
@@ -211,8 +215,11 @@
                         }
                         kom[i].innerHTML = licznik;
                         if (kliknieto == (liczbaKomorek - liczbaBomb)) {
+                            if (userID == 0)
+                                socket.emit("winClick", userID);
+                            else if (userID == 1)
+                                socket.emit("winClick", userID);
                             alert("Brawo udało Ci się wygrać :)");
-                            socket.emit("winner", userID);
                         }
                     }
                 }

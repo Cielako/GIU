@@ -33,7 +33,6 @@ io.on('connection', function (socket) {
 
             //zwiększenie id o 1, przy każdym nowym użytkowniku
             id++;
-
             io.emit("users", user);
         });
     }
@@ -50,8 +49,8 @@ io.on('connection', function (socket) {
     socket.on("disconnect", function () {
         if (players[socket.id] != undefined) {
             io.emit('chat message', `Gracz o nazwie ${players[socket.id]} wyszedł z lobby`); // do wszystkich
+            delete players[socket.id];
         }
-        delete players[socket.id];
         let user = "";
         if (players[0] == undefined)
             id = 0;
@@ -76,13 +75,24 @@ io.on('connection', function (socket) {
         rozmowa = [msg]
         io.emit('reset', msg); // do wszystkich
     });
-    // Zwracamy wygranemu użytkownikowi komunikat
-    socket.on('winner', function (msg) {
-        if (msg == 0)
-            io.emit("stopGame", 0);
-        if (msg == 1)
-            io.emit("stopGame", 1);
+    // Zwracamy przegranemu użytkownikowi komunikat
+    socket.on('winBomb', function (msg) {
+        io.emit("stopGame", msg);
         io.emit('reset', `Gracz o nazwie ${players[msg]} wygrał rozgrywke`); // do wszystkich
+        
+    });
+
+    // Zwracamy wygranemu użytkownikowi komunikat
+    socket.on('winClick', function (msg) {
+        if (msg == 0){
+            io.emit("stopGame", 1);
+            io.emit('reset', `Gracz o nazwie ${players[msg]} wygrał rozgrywke`); // do wszystkich
+        }
+        else if (msg == 1){
+            io.emit("stopGame", 0);
+            io.emit('reset', `Gracz o nazwie ${players[msg]} wygrał rozgrywke`); // do wszystkich
+        }
+        io.emit("stopGame", msg);
     });
 
     socket.on('restartGame', function (userID) {
