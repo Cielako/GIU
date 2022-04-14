@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DiceRoller_GUI_Kamil_Cielica</string>
+    <string name="roll_button">ROLL</string>
+    <string name="dice_result">1</string>
+</resources>
