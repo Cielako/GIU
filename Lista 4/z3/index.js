@@ -75,7 +75,7 @@ io.on('connection', function (socket) {
         rozmowa = [msg]
         io.emit('reset', msg); // do wszystkich
     });
-    // Zwracamy przegranemu użytkownikowi komunikat
+    // Zwracamy wygranemu użytkownikowi komunikat
     socket.on('winBomb', function (msg) {
         io.emit("stopGame", msg);
         io.emit('reset', `Gracz o nazwie ${players[msg]} wygrał rozgrywke`); // do wszystkich
