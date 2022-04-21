@@ -28,4 +28,9 @@ fun main() {
     println("\n")
     print("Dzielniki liczby 120 =")
     Dzielniki(120){print(" $it")}
+    println("Suma dzielnikow liczby")
+    var suma = 0;
+    Dzielniki(140){suma += it }
+    print("Suma dzielnikow liczby 144: " + suma)
+    
 }
